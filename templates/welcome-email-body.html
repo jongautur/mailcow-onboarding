@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <body style="margin:0;background:#f4f6f8;color:#20252b;font-family:Arial,Helvetica,sans-serif;line-height:1.5">
+    <div style="max-width:640px;margin:0 auto;padding:32px 16px">
+      <div style="background:#ffffff;border:1px solid #e1e5e8;border-radius:12px;padding:32px">
+        <h1 style="margin:0 0 16px;color:#123b5d;font-size:26px">Welcome!</h1>
+        <p>Congratulations on your new email address: <strong>$address</strong></p>
+        <p>You can open your mailbox at <a href="$webmail_url">$webmail_url</a>.</p>
+        <h2 style="color:#123b5d;font-size:19px;margin:28px 0 8px">IMAP</h2>
+        <p style="margin:0">Username: <strong>$address</strong><br>
+        Server: <strong>$mail_server</strong><br>
+        Port: <strong>$imap_port</strong> (SSL/TLS)<br>
+        Password: Your mailbox password or app password<br>
+        <a href="$app_password_url">Create an app password</a></p>
+        <h2 style="color:#123b5d;font-size:19px;margin:28px 0 8px">SMTP</h2>
+        <p style="margin:0">Username: <strong>$address</strong><br>
+        Server: <strong>$mail_server</strong><br>
+        Port: <strong>$smtp_port</strong> (STARTTLS)<br>
+        Password: Your mailbox password or app password<br>
+        <a href="$app_password_url">Create an app password</a></p>
+        <p style="margin:32px 0 0">Regards,<br>Mailbox support</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+services:
+  mailcow-onboarding:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - mailcow-onboarding-data:/data
+      - ./templates:/templates:ro
+
+volumes:
+  mailcow-onboarding-data:
