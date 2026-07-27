@@ -1,0 +1,71 @@
+name: Publish container image
+
+on:
+  release:
+    types: [published]
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to publish, for example 1.0.0
+        required: true
+        default: 1.0.0
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: jongautur/mailcow-onboarding
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          fi
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $VERSION"
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "minor=${VERSION%.*}" >> "$GITHUB_OUTPUT"
+
+      - name: Check out release
+        uses: actions/checkout@v6
+        with:
+          ref: v${{ steps.version.outputs.version }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.minor }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/jongautur/mailcow-onboarding
+            org.opencontainers.image.version=${{ steps.version.outputs.version }}
+            org.opencontainers.image.licenses=MIT
