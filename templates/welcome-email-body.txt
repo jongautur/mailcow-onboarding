@@ -1,0 +1,23 @@
+Welcome, and congratulations on your new email address!
+
+You can open your mailbox here:
+$webmail_url
+
+Here are your connection settings:
+
+IMAP
+  Username: $address
+  Server: $mail_server
+  Port: $imap_port (SSL/TLS)
+  Password: Your mailbox password or app password
+  Create an app password: $app_password_url
+
+SMTP
+  Username: $address
+  Server: $mail_server
+  Port: $smtp_port (STARTTLS)
+  Password: Your mailbox password or app password
+  Create an app password: $app_password_url
+
+Regards,
+Mailbox support

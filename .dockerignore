@@ -1,0 +1,8 @@
+.env
+.git
+.gitignore
+.dockerignore
+README.md
+data/
+__pycache__/
+*.py[cod]
